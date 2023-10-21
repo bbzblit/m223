@@ -31,7 +31,7 @@ public class Message {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Person author;
+    private User author;
 
     private String message;
 
@@ -39,7 +39,7 @@ public class Message {
     private Instant creationDate;
 
     public static CollaborationMessage toCollaborationMessage(Message message){
-        Person author = message.getAuthor();
+        User author = message.getAuthor();
         UserInfo userInfo = new UserInfo(author.getUsername(), author.getUsername());
 
         return new CollaborationMessage(
@@ -51,7 +51,7 @@ public class Message {
 
     public static Message fromCollaborationMessage(CollaborationMessage message, String topic){
         return Message.builder()
-                .author(Person.builder().username(message.getUser().getName()).build())
+                .author(User.builder().username(message.getUser().getName()).build())
                 .message(message.getText())
                 .chat(Chat.builder().id(topic).build())
                 .creationDate(message.getTime())

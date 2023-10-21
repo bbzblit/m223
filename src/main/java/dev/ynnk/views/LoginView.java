@@ -21,14 +21,6 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     public LoginView(final UserService userServie){
         this.userServie = userServie;
 
-        User user = User.builder()
-                .username("user")
-                .password("password")
-                .accountNonLocked(true)
-                .build();
-
-        userServie.save(user);
-
         addClassName("login-view");
         setSizeFull();
 
@@ -37,7 +29,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         login.setAction("login");
 
-        add(new H1("Test Application"), login);
+        add(new H1("Welcome Back"), login);
     }
 
     @Override

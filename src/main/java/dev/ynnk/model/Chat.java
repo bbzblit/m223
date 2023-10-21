@@ -18,10 +18,10 @@ public class Chat {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Person personA;
+    private User personA;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Person personB;
+    private User personB;
 
 
 }
