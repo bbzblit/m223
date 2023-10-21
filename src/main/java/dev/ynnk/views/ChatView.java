@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @PageTitle("Chat")
-@Route(value = "Chat")
+@Route(value = "chat")
 @RouteAlias(value = "")
 public class ChatView extends VerticalLayout {
 
