@@ -9,5 +9,5 @@ import java.time.Instant;
 @Repository
 public interface MessageRepository extends CrudRepository<Message, Long> {
 
-    public Iterable<Message> findAllByCreationDateGreaterThanEqual(Instant time);
+    public Iterable<Message> findAllByCreationDateGreaterThanEqualAndChatId(Instant time, String topic);
 }

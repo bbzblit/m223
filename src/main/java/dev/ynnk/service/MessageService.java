@@ -36,7 +36,7 @@ public class MessageService implements ParentService<Message, Long>{
         this.messageRepository.deleteById(aLong);
     }
 
-    public Iterable<Message> findAllSince(Instant since){
-        return this.messageRepository.findAllByCreationDateGreaterThanEqual(since);
+    public Iterable<Message> findAllSinceOfChat(Instant since, String chatId){
+        return this.messageRepository.findAllByCreationDateGreaterThanEqualAndChatId(since, chatId);
     }
 }

@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 public class Chat {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -23,5 +22,6 @@ public class Chat {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Person personB;
+
 
 }

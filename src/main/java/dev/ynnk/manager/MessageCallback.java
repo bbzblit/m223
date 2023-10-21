@@ -7,7 +7,6 @@ import dev.ynnk.model.Message;
 import dev.ynnk.service.MessageService;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -23,14 +22,15 @@ public class MessageCallback implements CollaborationMessagePersister {
     @Override
     @Transactional(readOnly = true)
     public Stream<CollaborationMessage> fetchMessages(FetchQuery fetchQuery) {
-        fetchQuery.getTopicId();
-
-        return StreamSupport.stream(messageService.findAllSince(fetchQuery.getSince()).spliterator(), false)
+        return StreamSupport.stream(
+                messageService.findAllSinceOfChat(fetchQuery.getSince(),
+                        fetchQuery.getTopicId()).spliterator(), false)
                 .map(Message::toCollaborationMessage);
     }
 
     @Override
     public void persistMessage(PersistRequest persistRequest) {
-        this.messageService.save(Message.fromCollaborationMessage(persistRequest.getMessage()));
+        this.messageService.save(Message.fromCollaborationMessage(
+                persistRequest.getMessage(), persistRequest.getTopicId()));
     }
 }

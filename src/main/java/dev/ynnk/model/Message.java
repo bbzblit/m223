@@ -49,10 +49,11 @@ public class Message {
         );
     }
 
-    public static Message fromCollaborationMessage(CollaborationMessage message){
+    public static Message fromCollaborationMessage(CollaborationMessage message, String topic){
         return Message.builder()
                 .author(Person.builder().username(message.getUser().getName()).build())
                 .message(message.getText())
+                .chat(Chat.builder().id(topic).build())
                 .creationDate(message.getTime())
                 .build();
     }
