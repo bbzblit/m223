@@ -151,6 +151,7 @@ public class ChatView extends HorizontalLayout {
         this.chatWrapper.setWidthFull();
         this.chatWrapper.setHeightFull();
 
+
         setMargin(true);
 
         add(chatWrapper, this.aside);
@@ -168,6 +169,8 @@ public class ChatView extends HorizontalLayout {
         if(tab != null){
             this.changeChat(tab.getLabel());
         }
+
+        setHeightFull();
 
     }
 

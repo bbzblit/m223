@@ -45,17 +45,18 @@ public class ChatComponent extends VerticalLayout {
         this.chatInput = new CollaborationMessageInput(messages);
 
         VerticalLayout chatWrapper = new VerticalLayout();
+        this.messages.setHeightFull();
+
         chatWrapper.add(this.messages, this.chatInput);
 
 
         this.messages.setWidthFull();
         this.chatInput.setWidthFull();
         chatWrapper.setWidthFull();
-
-        setMargin(true);
-        setPadding(true);
+        chatWrapper.setHeightFull();
 
         add(chatWrapper);
+        setHeightFull();
     }
 
 }
