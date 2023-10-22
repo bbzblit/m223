@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 public class Chat {
 
     @Id
-    private String id;
+    @GeneratedValue
+    private Long id;
 
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -1,7 +1,6 @@
 package dev.ynnk.security;
 
 import dev.ynnk.service.UserService;
-import org.apache.catalina.realm.AuthenticatedUserRealm;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

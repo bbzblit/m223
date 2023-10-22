@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService implements ParentService<User, String>, UserDetailsService {
 
@@ -46,5 +48,4 @@ public class UserService implements ParentService<User, String>, UserDetailsServ
                 .orElseThrow(() -> new UsernameNotFoundException("User not present"));
         return user;
     }
-
 }

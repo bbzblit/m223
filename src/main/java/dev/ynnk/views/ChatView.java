@@ -1,90 +1,123 @@
 package dev.ynnk.views;
 
-import com.vaadin.collaborationengine.*;
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.messages.MessageInput;
-import com.vaadin.flow.component.messages.MessageList;
-import com.vaadin.flow.component.messages.MessageListItem;
+import com.vaadin.flow.component.html.*;
+import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
-import com.vaadin.flow.spring.annotation.SpringComponent;
+import com.vaadin.flow.theme.lumo.LumoUtility;
+import dev.ynnk.component.ChatComponent;
 import dev.ynnk.manager.MessageCallback;
 import dev.ynnk.model.Chat;
-import dev.ynnk.model.Message;
 import dev.ynnk.model.User;
+import dev.ynnk.service.ChatService;
 import dev.ynnk.service.MessageService;
 import dev.ynnk.service.UserService;
 import jakarta.annotation.security.PermitAll;
-import org.apache.commons.lang3.stream.Streams;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 @PageTitle("Chat")
 @Route(value = "")
 @RouteAlias(value = "")
 @PermitAll
-public class ChatView extends VerticalLayout {
+public class ChatView extends HorizontalLayout {
+
+
+    private ChatComponent chatComponent;
 
     private final MessageService messageService;
+
     private final UserService userService;
 
+    private final ChatService chatService;
 
-    private UserInfo currentUser;
+    private final MessageCallback messageCallback;
+
+    private final User currentUser;
+
+    private final Aside aside = new Aside();
+
+    private final Tabs tabs = new Tabs();
+
+    private Div chatWrapper = new Div();
+
+    private void loadChats(){
+        for (Chat chat : this.chatService.findAllByUser(this.currentUser.getUsername())) {
+            String username = chat.getPersonA().getUsername().equals(this.currentUser.getUsername()) ?
+                    chat.getPersonB().getUsername() :
+                    chat.getPersonA().getUsername();
+
+            this.tabs.add(new Tab(username));
+        }
+
+        this.aside.add(this.tabs);
+    }
+
+    private void initChatPlaceholder(){
+        VerticalLayout chatPlaceholder = new VerticalLayout();
+
+        chatPlaceholder.removeAll();
+        chatPlaceholder.addClassName("chat-placeholder");
+        chatPlaceholder.getStyle().set("display", "flex");
+        chatPlaceholder.getStyle().set("justify-content", "center");
+        chatPlaceholder.getStyle().set("align-items", "center");
 
 
-    private CollaborationMessageList messages;
+        H1 h1 = new H1();
+        h1.setText("Welcome back " + this.currentUser.getUsername());
 
-    private CollaborationMessageInput chatInput;
+        H3 h2 = new H3();
+        h2.setText("Select a chat to start messaging or create a new one");
 
+        chatPlaceholder.add(h1, h2);
+        chatPlaceholder.setWidthFull();
+        chatPlaceholder.setHeightFull();
 
-    public ChatView(final MessageService messageService, final MessageCallback callback, final UserService userService) {
+        this.chatWrapper.add(chatPlaceholder);
+    }
 
-        this.userService = userService;
+    public ChatView(final MessageService messageService,
+                    final UserService userService,
+                    final MessageCallback messageCallback,
+                    final ChatService chatService){
+
         this.messageService = messageService;
-
-        User user = new User();
-        user.setUsername("test");
-        user.setPassword("test");
-        user.setAccountNonLocked(true);
-        this.userService.save(user);
-
-
+        this.userService = userService;
+        this.messageCallback = messageCallback;
+        this.chatService = chatService;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        user = this.userService.findById(authentication.getName());
+        this.currentUser = this.userService.findById(authentication.getName());
 
+        EmailField emailField = new EmailField();
+        emailField.setLabel("Create new chat");
+        emailField.setClearButtonVisible(true);
 
-        this.currentUser  = new UserInfo(user.getUsername(), user.getUsername());
+        loadChats();
 
-        this.messages = new CollaborationMessageList(currentUser, "general", callback);
-        this.chatInput = new CollaborationMessageInput(messages);
+        this.aside.add(emailField, this.tabs);
 
-        VerticalLayout chatWrapper = new VerticalLayout();
-        chatWrapper.add(this.messages, this.chatInput);
+        this.aside.getStyle().set("margin-left", "auto");
 
+        initChatPlaceholder();
 
-
-        this.messages.setWidthFull();
-        this.chatInput.setWidthFull();
-        chatWrapper.setWidthFull();
+        this.chatWrapper.setWidthFull();
+        this.chatWrapper.setHeightFull();
 
         setMargin(true);
-        setPadding(true);
 
-        add(chatWrapper);
+        add(chatWrapper, this.aside);
+
     }
+
+
 
 }

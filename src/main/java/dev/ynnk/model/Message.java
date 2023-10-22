@@ -10,10 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Date;
 
 @Entity
 @AllArgsConstructor
@@ -53,7 +49,7 @@ public class Message {
         return Message.builder()
                 .author(User.builder().username(message.getUser().getName()).build())
                 .message(message.getText())
-                .chat(Chat.builder().id(topic).build())
+                .chat(Chat.builder().id(Long.parseLong(topic)).build())
                 .creationDate(message.getTime())
                 .build();
     }

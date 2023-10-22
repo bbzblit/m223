@@ -1,0 +1,61 @@
+package dev.ynnk.component;
+
+import com.vaadin.collaborationengine.CollaborationMessageInput;
+import com.vaadin.collaborationengine.CollaborationMessageList;
+import com.vaadin.collaborationengine.UserInfo;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import dev.ynnk.manager.MessageCallback;
+import dev.ynnk.model.User;
+import dev.ynnk.service.MessageService;
+import dev.ynnk.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+public class ChatComponent extends VerticalLayout {
+
+
+    private final MessageService messageService;
+    private final UserService userService;
+
+
+    private final UserInfo currentUser;
+
+
+    private final CollaborationMessageList messages;
+
+    private final CollaborationMessageInput chatInput;
+
+
+    public ChatComponent(
+            final MessageService messageService,
+            final MessageCallback callback,
+            final UserService userService,
+            final String chatName) {
+
+        this.userService = userService;
+        this.messageService = messageService;
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = this.userService.findById(authentication.getName());
+
+
+        this.currentUser = new UserInfo(user.getUsername(), user.getUsername());
+
+        this.messages = new CollaborationMessageList(currentUser, chatName, callback);
+        this.chatInput = new CollaborationMessageInput(messages);
+
+        VerticalLayout chatWrapper = new VerticalLayout();
+        chatWrapper.add(this.messages, this.chatInput);
+
+
+        this.messages.setWidthFull();
+        this.chatInput.setWidthFull();
+        chatWrapper.setWidthFull();
+
+        setMargin(true);
+        setPadding(true);
+
+        add(chatWrapper);
+    }
+
+}

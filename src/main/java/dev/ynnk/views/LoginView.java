@@ -6,7 +6,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import dev.ynnk.model.User;
-import dev.ynnk.repository.UserRepository;
 import dev.ynnk.service.UserService;
 
 @Route("login")
@@ -19,6 +18,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     private final UserService userServie;
 
     public LoginView(final UserService userServie){
+
         this.userServie = userServie;
 
         addClassName("login-view");

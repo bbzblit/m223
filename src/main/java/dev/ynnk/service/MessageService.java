@@ -37,6 +37,6 @@ public class MessageService implements ParentService<Message, Long>{
     }
 
     public Iterable<Message> findAllSinceOfChat(Instant since, String chatId){
-        return this.messageRepository.findAllByCreationDateGreaterThanEqualAndChatId(since, chatId);
+        return this.messageRepository.findAllByCreationDateGreaterThanEqualAndChatId(since, Long.parseLong(chatId));
     }
 }
