@@ -41,4 +41,10 @@ public class ChatService implements ParentService<Chat, Long> {
     public Iterable<Chat> findAllByUser(String username){
         return this.chatRepository.findAllByPersonAUsernameOrPersonBUsername(username, username);
     }
+
+    public Chat findByUsernames(String usernameA, String usernameB){
+        return this.chatRepository.findByPersonAUsernameAndPersonBUsername(usernameA, usernameB)
+                .orElse(this.chatRepository.findByPersonAUsernameAndPersonBUsername(usernameB, usernameA)
+                        .orElse(null));
+    }
 }
