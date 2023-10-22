@@ -1,11 +1,13 @@
 package dev.ynnk.security;
 
+import dev.ynnk.service.SecurityService;
 import dev.ynnk.service.UserService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.security.authentication.AuthenticationProvider;
 
@@ -14,8 +16,11 @@ public class AuthProvider implements AuthenticationProvider{
 
     private final UserService userService;
 
-    public AuthProvider(UserService userService) {
+    private final SecurityService securityService;
+
+    public AuthProvider(final UserService userService, final SecurityService securityService) {
         this.userService = userService;
+        this.securityService = securityService;
     }
 
     @Override
@@ -26,7 +31,7 @@ public class AuthProvider implements AuthenticationProvider{
         UserDetails user = this.userService.loadUserByUsername(username);
 
 
-        if (!user.getPassword().equals(password)) {
+        if (!this.securityService.check(password, user.getPassword())) {
             throw new BadCredentialsException("Wrong password");
         }
 
