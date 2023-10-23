@@ -2,8 +2,11 @@ package dev.ynnk.views;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -35,8 +38,8 @@ public class SignUpView extends VerticalLayout {
         setSizeFull();
 
         TextField username = new TextField("Username");
-        TextField password = new TextField("Password");
-        TextField confirmPassword = new TextField("Confirm Password");
+        PasswordField password = new PasswordField("Password");
+        PasswordField confirmPassword = new PasswordField("Confirm Password");
         Button signUp = new Button("Sign Up");
 
         signUp.addClickListener(buttonClickEvent -> {
@@ -51,15 +54,22 @@ public class SignUpView extends VerticalLayout {
                         .username(username.getValue())
                         .password(hashedPassword)
                         .build());
+                getUI().ifPresent(ui -> ui.navigate("login"));
             }
         });
 
-        this.signUpForm.add(username, password, confirmPassword, signUp);
+        Anchor loginLink = new Anchor();
+        loginLink.setText("Already have an account?");
+        loginLink.setHref("login");
+
+        this.signUpForm.add(username, password, confirmPassword, loginLink, signUp);
         this.signUpForm.setWidthFull();
+        this.signUpForm.setAlignItems(Alignment.CENTER);
+        H1 title = new H1("Register");
 
-        add(this.signUpForm);
-
-
+        add(title, this.signUpForm);
+        setJustifyContentMode(JustifyContentMode.CENTER);
+        setAlignItems(Alignment.CENTER);
     }
 
 }
