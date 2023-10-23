@@ -96,7 +96,12 @@ public class ChatView extends HorizontalLayout {
                         Chat chat = new Chat();
                         chat.setPersonA(this.currentUser);
                         chat.setPersonB(user);
-                        chat = this.chatService.save(chat);
+                        this.chatService.save(chat);
+
+                        this.tabs.add(new Tab(user.getUsername()));
+
+                        Tab tab = this.tabs.getSelectedTab();
+                        this.changeChat(tab.getLabel());
                     } else {
                         usernameField.setErrorMessage("User not found");
                         usernameField.setInvalid(true);
