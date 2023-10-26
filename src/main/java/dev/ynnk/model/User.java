@@ -1,5 +1,7 @@
 package dev.ynnk.model;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,11 +31,18 @@ public class User implements UserDetails {
 
     private String email;
 
+    private boolean is_admin;
+
     private boolean accountNonLocked;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "read");
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if (this.is_admin) {
+            authorities.add((GrantedAuthority) () -> "ROLE_ADMIN");
+        }
+        authorities.add((GrantedAuthority) () -> "ROLE_USER");
+        return authorities;
     }
 
     @Override

@@ -19,6 +19,7 @@ import dev.ynnk.service.ChatService;
 import dev.ynnk.service.MessageService;
 import dev.ynnk.service.UserService;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -29,7 +30,7 @@ import java.util.Set;
 
 @PageTitle("Chat")
 @Route(value = "", layout = MainLayout.class)
-@PermitAll
+@RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
 public class ChatView extends HorizontalLayout {
 
 
