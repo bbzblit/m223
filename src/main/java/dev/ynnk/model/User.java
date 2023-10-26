@@ -1,11 +1,9 @@
 package dev.ynnk.model;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -31,14 +29,12 @@ public class User implements UserDetails {
 
     private String email;
 
-    private boolean is_admin;
-
-    private boolean accountNonLocked;
+    private boolean admin;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if (this.is_admin) {
+        if (this.admin) {
             authorities.add((GrantedAuthority) () -> "ROLE_ADMIN");
         }
         authorities.add((GrantedAuthority) () -> "ROLE_USER");
@@ -52,7 +48,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return accountNonLocked;
+        return true;
     }
 
     @Override public boolean isCredentialsNonExpired() {

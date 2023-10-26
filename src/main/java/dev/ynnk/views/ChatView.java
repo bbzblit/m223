@@ -9,7 +9,6 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
 import dev.ynnk.MainLayout;
 import dev.ynnk.component.ChatComponent;
 import dev.ynnk.manager.MessageCallback;
@@ -18,15 +17,12 @@ import dev.ynnk.model.User;
 import dev.ynnk.service.ChatService;
 import dev.ynnk.service.MessageService;
 import dev.ynnk.service.UserService;
-import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @PageTitle("Chat")
 @Route(value = "", layout = MainLayout.class)
