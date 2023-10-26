@@ -32,7 +32,10 @@ public class MainLayout extends AppLayout {
         title.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         Button logout = new Button("Sign out", VaadinIcon.SIGN_OUT.create(), e -> securityService.logout());
 
-        Anchor profileLink = new Anchor("profile", new Avatar(this.currentUser.getUsername()));
+        Avatar avatar = new Avatar(this.currentUser.getUsername());
+        avatar.setColorIndex((int)Math.floor(Math.random() * 7));
+
+        Anchor profileLink = new Anchor("profile", avatar);
 
         HorizontalLayout header = new HorizontalLayout(profileLink,title, logout);
 
