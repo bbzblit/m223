@@ -34,7 +34,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build and push
       run: |
-        mvn -B package --no-transfer-progress
+        mvn -B package --no-transfer-progress -Pproduction
         docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/bbzblit/m233/app:latest --push .
 
     - name: Check if tests passed
