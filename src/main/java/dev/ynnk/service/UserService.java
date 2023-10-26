@@ -2,6 +2,8 @@ package dev.ynnk.service;
 
 import dev.ynnk.model.User;
 import dev.ynnk.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,6 +49,11 @@ public class UserService implements ParentService<User, String>, UserDetailsServ
         User user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not present"));
         return user;
+    }
+
+    public User getCurrentLoggedInUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return this.findById(authentication.getName());
     }
 
 }

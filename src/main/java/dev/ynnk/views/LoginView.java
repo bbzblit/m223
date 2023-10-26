@@ -3,6 +3,7 @@ package dev.ynnk.views;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
+import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
@@ -31,7 +32,15 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         login.setAction("login");
 
-        this.login.setForgotPasswordButtonVisible(false);
+        LoginI18n i18n = LoginI18n.createDefault();
+        LoginI18n.Form i18nForm = i18n.getForm();
+
+        i18nForm.setForgotPassword("Sign Up");
+        i18n.setForm(i18nForm);
+        this.login.setI18n(i18n);
+        this.login.addForgotPasswordListener(
+                e -> getUI().ifPresent(ui -> ui.navigate("signup"))
+        );
 
         //this.login.get
 
