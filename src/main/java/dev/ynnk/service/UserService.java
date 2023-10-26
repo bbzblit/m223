@@ -48,4 +48,5 @@ public class UserService implements ParentService<User, String>, UserDetailsServ
                 .orElseThrow(() -> new UsernameNotFoundException("User not present"));
         return user;
     }
+
 }

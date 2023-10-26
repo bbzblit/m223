@@ -1,5 +1,6 @@
 package dev.ynnk.views;
 
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -17,6 +18,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     private LoginForm login = new LoginForm();
     private final UserService userServie;
 
+
     public LoginView(final UserService userServie){
 
         this.userServie = userServie;
@@ -28,6 +30,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setAlignItems(Alignment.CENTER);
 
         login.setAction("login");
+
+        this.login.setForgotPasswordButtonVisible(false);
+
+        //this.login.get
 
         add(new H1("Welcome Back"), login);
     }

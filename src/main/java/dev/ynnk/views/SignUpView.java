@@ -1,10 +1,8 @@
 package dev.ynnk.views;
 
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -13,7 +11,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import dev.ynnk.model.User;
-import dev.ynnk.service.SecurityService;
+import dev.ynnk.service.HashService;
 import dev.ynnk.service.UserService;
 
 @Route("signup")
@@ -22,7 +20,7 @@ import dev.ynnk.service.UserService;
 @AnonymousAllowed
 public class SignUpView extends VerticalLayout {
 
-    private final SecurityService securityService;
+    private final HashService securityService;
 
     private final UserService userService;
 
@@ -33,7 +31,7 @@ public class SignUpView extends VerticalLayout {
     private TextField username;
 
 
-    public SignUpView(final SecurityService securityService, final UserService userService){
+    public SignUpView(final HashService securityService, final UserService userService){
         this.securityService = securityService;
         this.userService = userService;
 

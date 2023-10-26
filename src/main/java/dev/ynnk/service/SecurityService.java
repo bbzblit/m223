@@ -1,25 +1,19 @@
 package dev.ynnk.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.server.VaadinServletRequest;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
 @Service
-public final class SecurityService {
+public class SecurityService {
 
-    @Value("${dev.ynnk.security.pepper}")
-    private transient String pepper;
-
-    public String hash(String password){
-        return BCrypt.hashpw(password + pepper, BCrypt.gensalt());
+    public void logout() {
+        UI.getCurrent().getPage().setLocation("/login");
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.logout(
+                VaadinServletRequest.getCurrent().getHttpServletRequest(), null,
+                null);
     }
 
-    public boolean check(String password, String hash){
-        return BCrypt.checkpw(password + pepper, hash);
-    }
-
-
-    public void setPepper(final String pepper) {
-        this.pepper = pepper;
-    }
 }

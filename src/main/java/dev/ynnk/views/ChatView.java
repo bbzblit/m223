@@ -10,6 +10,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import dev.ynnk.MainLayout;
 import dev.ynnk.component.ChatComponent;
 import dev.ynnk.manager.MessageCallback;
 import dev.ynnk.model.Chat;
@@ -22,8 +23,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @PageTitle("Chat")
-@Route(value = "")
-@RouteAlias(value = "")
+@Route(value = "", layout = MainLayout.class)
 @PermitAll
 public class ChatView extends HorizontalLayout {
 
