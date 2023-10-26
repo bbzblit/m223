@@ -37,6 +37,8 @@ public class MainLayout extends AppLayout {
 
         Anchor profileLink = new Anchor("profile", avatar);
 
+        avatar.getStyle().set("cursor", "pointer");
+
         HorizontalLayout header = new HorizontalLayout(profileLink,title, logout);
 
 

@@ -3,6 +3,7 @@ package dev.ynnk.views;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
@@ -56,7 +57,11 @@ public class UserProfileView extends VerticalLayout {
 
         H1 title = new H1("Edit your informations");
 
+        Anchor anchor = new Anchor("", "Back to chat");
+
         Button save = new Button("Save");
+
+        save.getStyle().set("cursor", "pointer");
 
         username.getStyle().set("width", "15rem");
         email.getStyle().set("width", "15rem");
@@ -89,7 +94,7 @@ public class UserProfileView extends VerticalLayout {
                 }
         );
 
-        this.formLayout.add(username, email, password, confirmPassword, save);
+        this.formLayout.add(username, email, password, confirmPassword, anchor ,save);
 
         add(title, this.formLayout);
 
