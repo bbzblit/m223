@@ -95,6 +95,8 @@ public class ChatView extends HorizontalLayout {
 
     private void initStartChatArea(){
         TextField usernameField = new TextField();
+
+        usernameField.setLabel("Username");
         usernameField.setClearButtonVisible(true);
 
         Button startChatButton = new Button("Start Chat");
@@ -132,8 +134,11 @@ public class ChatView extends HorizontalLayout {
                 }
         );
 
+        Div devider = new Div();
+        devider.getStyle().set("height", "1px").set("background-color", "#e0e0e0").set("margin", "1rem 0");
+
         this.aside.removeAll();
-        this.aside.add(usernameField, startChatButton);
+        this.aside.add(usernameField, devider, startChatButton);
     }
 
     private void changeChat(String username){
@@ -198,7 +203,13 @@ public class ChatView extends HorizontalLayout {
             this.changeChat(tab.getLabel());
         }
 
-        setHeightFull();
+        this.aside.getStyle().set("background-color", "#2c3d52");
+        this.aside.getStyle().set("padding", "1rem");
+        this.aside.getStyle().set("border-radius", "0.5rem");
+        this.aside.getStyle().set("box-shadow", "0 0 0.5rem rgba(0, 0, 0, 0.1)");
+
+
+        setHeight("95%");
 
     }
 
