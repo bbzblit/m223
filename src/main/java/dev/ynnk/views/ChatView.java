@@ -138,7 +138,7 @@ public class ChatView extends HorizontalLayout {
         devider.getStyle().set("height", "1px").set("background-color", "#e0e0e0").set("margin", "1rem 0");
 
         this.aside.removeAll();
-        this.aside.add(usernameField, devider, startChatButton);
+        this.aside.add(usernameField, startChatButton, devider);
     }
 
     private void changeChat(String username){
