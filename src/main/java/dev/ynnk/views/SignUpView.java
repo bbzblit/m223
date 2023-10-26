@@ -4,6 +4,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -40,6 +41,9 @@ public class SignUpView extends VerticalLayout {
         this.username = new TextField("Username");
         PasswordField password = new PasswordField("Password");
         PasswordField confirmPassword = new PasswordField("Confirm Password");
+        EmailField emailField = new EmailField("Email");
+
+
         Button signUp = new Button("Sign Up");
 
         signUp.addClickListener(buttonClickEvent -> {
@@ -72,6 +76,7 @@ public class SignUpView extends VerticalLayout {
                 this.userService.save(User.builder()
                         .username(username.getValue())
                         .password(hashedPassword)
+                        .email(emailField.getValue())
                         .build());
 
 
@@ -83,15 +88,15 @@ public class SignUpView extends VerticalLayout {
         loginLink.setText("Already have an account?");
         loginLink.setHref("login");
 
-        this.signUpForm.add(username, password, confirmPassword, loginLink, signUp);
+        username.setWidth("15rem");
+        password.setWidth("15rem");
+        emailField.setWidth("15rem");
+        confirmPassword.setWidth("15rem");
+
+        this.signUpForm.add(username, emailField, password, confirmPassword, loginLink, signUp);
         this.signUpForm.setWidthFull();
         this.signUpForm.setAlignItems(Alignment.CENTER);
         H1 title = new H1("Register");
-
-
-        username.setWidth("15rem");
-        password.setWidth("15rem");
-        confirmPassword.setWidth("15rem");
 
         add(title, this.signUpForm);
         setJustifyContentMode(JustifyContentMode.CENTER);
