@@ -32,6 +32,8 @@ public class MainLayout extends AppLayout {
         title.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         Button logout = new Button("Sign out", VaadinIcon.SIGN_OUT.create(), e -> securityService.logout());
 
+        logout.getStyle().set("cursor", "pointer");
+
         Avatar avatar = new Avatar(this.currentUser.getUsername());
         avatar.setColorIndex((int)Math.floor(Math.random() * 7));
 

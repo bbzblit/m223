@@ -5,6 +5,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.PasswordField;
@@ -90,6 +92,12 @@ public class UserProfileView extends VerticalLayout {
                             .password(pwd)
                             .build();
                     this.userService.save(user);
+                    Notification notification = new Notification();
+                    notification.setText("Profile successfully updated");
+                    notification.setDuration(3000);
+                    notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                    notification.open();
+
                     getUI().ifPresent(ui -> ui.navigate(""));
                 }
         );

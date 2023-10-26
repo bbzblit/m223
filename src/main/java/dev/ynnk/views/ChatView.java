@@ -98,6 +98,7 @@ public class ChatView extends HorizontalLayout {
         usernameField.setClearButtonVisible(true);
 
         Button startChatButton = new Button("Start Chat");
+        startChatButton.getStyle().set("cursor", "pointer");
         startChatButton.addClickListener(
                 clickEvent -> {
 
