@@ -15,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.server.VaadinServletRequest;
 import dev.ynnk.model.User;
 import dev.ynnk.service.HashService;
+import dev.ynnk.service.MailService;
 import dev.ynnk.service.SecurityService;
 import dev.ynnk.service.UserService;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -64,6 +65,7 @@ public class MainLayout extends AppLayout {
 
 
     public MainLayout(final UserService userService, final SecurityService securityService){
+
         this.userService = userService;
         this.securityService = securityService;
 

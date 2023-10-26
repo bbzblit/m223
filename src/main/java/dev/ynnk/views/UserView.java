@@ -55,6 +55,7 @@ public class UserView extends VerticalLayout {
         editor.setBuffered(true);
 
         TextField usernameField = new TextField();
+        usernameField.setReadOnly(true);
         binder.forField(usernameField).bind(User::getUsername, User::setUsername);
         usernameColumn.setEditorComponent(usernameField);
 
