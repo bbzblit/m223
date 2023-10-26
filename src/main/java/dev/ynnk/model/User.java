@@ -7,10 +7,7 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @AllArgsConstructor
 @Builder
 @Table(name = "login_user")
+@EqualsAndHashCode(of = "username")
 public class User implements UserDetails {
 
     @Id

@@ -1,8 +1,15 @@
 package dev.ynnk.views;
 
 
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.editor.Editor;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -24,13 +31,61 @@ public class UserView extends VerticalLayout {
 
     Grid<User> userList = new Grid<>(User.class, false);
 
+    private void initGrid(){
+
+        Editor<User> editor = userList.getEditor();
+
+        Grid.Column<User> usernameColumn = userList.addColumn(User::getUsername).setHeader("Username");
+        Grid.Column<User> emailColumn = userList.addColumn(User::getEmail).setHeader("Email");
+        Grid.Column<User> adminColumn = userList.addColumn(User::isAdmin).setHeader("Admin");
+
+        Grid.Column<User> editColumn = userList.addComponentColumn(user -> {
+            Button editButton = new Button("Edit");
+            editButton.addClickListener(e -> {
+                if (editor.isOpen())
+                    editor.cancel();
+                userList.getEditor().editItem(user);
+            });
+            return editButton;
+        }).setWidth("150px").setFlexGrow(0);
+
+        Binder<User> binder = userList.getEditor().getBinder();
+
+        editor.setBinder(binder);
+        editor.setBuffered(true);
+
+        TextField usernameField = new TextField();
+        binder.forField(usernameField).bind(User::getUsername, User::setUsername);
+        usernameColumn.setEditorComponent(usernameField);
+
+        TextField emailField = new TextField();
+        binder.forField(emailField).bind(User::getEmail, User::setEmail);
+        emailColumn.setEditorComponent(emailField);
+
+        Checkbox adminCheckbox = new Checkbox();
+        binder.forField(adminCheckbox).bind(User::isAdmin, User::setAdmin);
+        adminColumn.setEditorComponent(adminCheckbox);
+        adminColumn.setWidth("100px");
+
+        Button saveButton = new Button("Save", e -> editor.save());
+        Button cancelButton = new Button(VaadinIcon.CLOSE.create(), e -> editor.cancel());
+
+        HorizontalLayout actions = new HorizontalLayout(saveButton, cancelButton);
+
+        editColumn.setEditorComponent(actions);
+        editor.addSaveListener(
+                event -> {
+                    User user = event.getItem();
+                    this.userService.save(user);
+                }
+        );
+
+    }
 
     public UserView(final UserService userService){
         this.userService = userService;
 
-        userList.addColumn(User::getUsername).setHeader("Username");
-        userList.addColumn(User::getEmail).setHeader("Email");
-        userList.addColumn(User::isAdmin).setHeader("Role");
+        initGrid();
 
         for (User user : this.userService.findAll()) {
             userList.setItems(user);
