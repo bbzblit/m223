@@ -30,6 +30,8 @@ public class SignUpView extends VerticalLayout {
 
     private final VerticalLayout signUpForm = new VerticalLayout();
 
+    private TextField username;
+
 
     public SignUpView(final SecurityService securityService, final UserService userService){
         this.securityService = securityService;
@@ -37,7 +39,7 @@ public class SignUpView extends VerticalLayout {
 
         setSizeFull();
 
-        TextField username = new TextField("Username");
+        this.username = new TextField("Username");
         PasswordField password = new PasswordField("Password");
         PasswordField confirmPassword = new PasswordField("Confirm Password");
         Button signUp = new Button("Sign Up");
@@ -45,8 +47,27 @@ public class SignUpView extends VerticalLayout {
         signUp.addClickListener(buttonClickEvent -> {
 
             if (this.userService.findById(username.getValue()) != null){
+                this.username.setErrorMessage("Username already taken");
+                this.username.setInvalid(true);
                 return;
             }
+
+            if(!password.getValue().equals(confirmPassword.getValue())){
+                password.setErrorMessage("Passwords do not match");
+                password.setInvalid(true);
+                confirmPassword.setErrorMessage("Passwords do not match");
+                confirmPassword.setInvalid(true);
+                return;
+            }
+
+            if(password.getValue().length() < 8){
+                password.setErrorMessage("Password must be at least 8 characters");
+                password.setInvalid(true);
+                confirmPassword.setErrorMessage("Password must be at least 8 characters");
+                confirmPassword.setInvalid(true);
+                return;
+            }
+
 
             if(password.getValue().equals(confirmPassword.getValue())){
                 String hashedPassword = this.securityService.hash(password.getValue());
@@ -54,6 +75,8 @@ public class SignUpView extends VerticalLayout {
                         .username(username.getValue())
                         .password(hashedPassword)
                         .build());
+
+
                 getUI().ifPresent(ui -> ui.navigate("login"));
             }
         });
@@ -66,6 +89,11 @@ public class SignUpView extends VerticalLayout {
         this.signUpForm.setWidthFull();
         this.signUpForm.setAlignItems(Alignment.CENTER);
         H1 title = new H1("Register");
+
+
+        username.setWidth("15rem");
+        password.setWidth("15rem");
+        confirmPassword.setWidth("15rem");
 
         add(title, this.signUpForm);
         setJustifyContentMode(JustifyContentMode.CENTER);
