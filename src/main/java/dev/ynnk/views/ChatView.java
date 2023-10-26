@@ -62,7 +62,9 @@ public class ChatView extends HorizontalLayout {
                     chat.getPersonA().getUsername();
 
             this.tabUsernames.add(username);
-            this.tabs.add(new Tab(username));
+            Tab tab = new Tab(username);
+            tab.getStyle().set("cursor", "pointer");
+            this.tabs.add(tab);
         }
 
         this.aside.add(this.tabs);
@@ -93,7 +95,6 @@ public class ChatView extends HorizontalLayout {
 
     private void initStartChatArea(){
         TextField usernameField = new TextField();
-        usernameField.setLabel("Type a username to start a new chat");
         usernameField.setClearButtonVisible(true);
 
         Button startChatButton = new Button("Start Chat");
