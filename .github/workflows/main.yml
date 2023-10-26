@@ -45,7 +45,3 @@ jobs:
       with:
         files: '**/surefire-reports/TEST-*.xml'
         check_name: Unit Tests
-
-    - name: Deploy to GitHub Container Registry
-      if: ${{ job.status == 'success' }}
-      run: docker push ghcr.io/${{ github.repository }}/my-image:${{ github.sha }}
