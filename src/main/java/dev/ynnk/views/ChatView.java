@@ -22,6 +22,11 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @PageTitle("Chat")
 @Route(value = "", layout = MainLayout.class)
 @PermitAll
@@ -44,6 +49,8 @@ public class ChatView extends HorizontalLayout {
 
     private final Tabs tabs = new Tabs();
 
+    private final List<String> tabUsernames = new ArrayList<>();
+
     private Div chatWrapper = new Div();
 
     private void loadChats(){
@@ -54,6 +61,7 @@ public class ChatView extends HorizontalLayout {
                     chat.getPersonB().getUsername() :
                     chat.getPersonA().getUsername();
 
+            this.tabUsernames.add(username);
             this.tabs.add(new Tab(username));
         }
 
@@ -91,21 +99,34 @@ public class ChatView extends HorizontalLayout {
         Button startChatButton = new Button("Start Chat");
         startChatButton.addClickListener(
                 clickEvent -> {
+
+
                     User user = this.userService.findById(usernameField.getValue());
-                    if(user != null){
-                        Chat chat = new Chat();
-                        chat.setPersonA(this.currentUser);
-                        chat.setPersonB(user);
-                        this.chatService.save(chat);
 
-                        this.tabs.add(new Tab(user.getUsername()));
-
-                        Tab tab = this.tabs.getSelectedTab();
-                        this.changeChat(tab.getLabel());
-                    } else {
+                    if (user == null){
                         usernameField.setErrorMessage("User not found");
                         usernameField.setInvalid(true);
+                        return;
                     }
+
+                    usernameField.clear();
+
+                    int index = this.tabUsernames.indexOf(user.getUsername());
+                    if(index != -1){
+                        this.tabs.setSelectedIndex(index);
+                        return;
+                    }
+
+                    Chat chat = new Chat();
+                    chat.setPersonA(this.currentUser);
+                    chat.setPersonB(user);
+                    this.chatService.save(chat);
+
+                    this.tabUsernames.add(user.getUsername());
+                    this.tabs.add(new Tab(user.getUsername()));
+
+                    Tab tab = this.tabs.getSelectedTab();
+                    this.changeChat(tab.getLabel());
                 }
         );
 
