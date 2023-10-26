@@ -18,6 +18,9 @@ public class MailService{
     @Value("${dev.ynnk.email.enabled}")
     private boolean enabled;
 
+    @Value("${dev.ynnk.mail.address}")
+    private String mailAddress;
+
     private final Logger LOG = LoggerFactory.getLogger(MailService.class);
 
     public void sendMail(String to, String subject, String text){
@@ -26,6 +29,8 @@ public class MailService{
             message.setTo(to);
             message.setSubject(subject);
             message.setText(text);
+            message.setFrom(mailAddress);
+
             emailSender.send(message);
         } else{
             LOG.info("Mail sending is disabled");
