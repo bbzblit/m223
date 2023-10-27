@@ -27,7 +27,13 @@ public class User implements UserDetails {
 
     private String email;
 
+    private String firstName;
+
+    private String lastName;
+
     private boolean admin;
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

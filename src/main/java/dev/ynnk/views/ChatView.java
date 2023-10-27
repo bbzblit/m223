@@ -33,21 +33,13 @@ public class ChatView extends HorizontalLayout {
     private ChatComponent chatComponent;
 
     private final MessageService messageService;
-
     private final UserService userService;
-
     private final ChatService chatService;
-
     private final MessageCallback messageCallback;
-
     private final User currentUser;
-
     private final Aside aside = new Aside();
-
     private final Tabs tabs = new Tabs();
-
     private final List<String> tabUsernames = new ArrayList<>();
-
     private Div chatWrapper = new Div();
 
     private void loadChats(){

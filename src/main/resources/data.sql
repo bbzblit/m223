@@ -1,0 +1,2 @@
+INSERT INTO `LOGIN_USER` (USERNAME, PASSWORD, EMAIL, FIRST_NAME, LAST_NAME, ADMIN) VALUES ('admin' ,'$2a$10$JDGhqMxDApIKiXqhI41s3.lLFjoOieYjJgbOPwdolsIw8zm2plbsq','admin@bbzbl-it.dev', 'Admin', 'Administrator', true);
+INSERT INTO `LOGIN_USER` (USERNAME, PASSWORD, EMAIL, FIRST_NAME, LAST_NAME, ADMIN) VALUES ('user' ,'$2a$10$lnVQpJBix/EhQ5wVOWDSv.Rk70RQseHJ1LwV.jcW08Jn0NU373pwm','user@bbzbl-it.dev', 'Max', 'Mustermann', false);
