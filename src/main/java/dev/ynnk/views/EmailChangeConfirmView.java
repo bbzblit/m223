@@ -22,7 +22,9 @@ public class EmailChangeConfirmView extends VerticalLayout implements BeforeEnte
 
     public EmailChangeConfirmView(final EmailChangeService emailChangeService, final UserService userService){
         this.emailChangeService = emailChangeService;
+        this.userService = userService;
     }
+
 
     private void changeEmail(String uuid){
         EmailChange emailChange = emailChangeService.findById(uuid);
