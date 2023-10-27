@@ -16,11 +16,16 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import dev.ynnk.MainLayout;
+import dev.ynnk.model.EmailChange;
 import dev.ynnk.model.User;
+import dev.ynnk.service.EmailChangeService;
 import dev.ynnk.service.HashService;
+import dev.ynnk.service.MailService;
 import dev.ynnk.service.UserService;
 import jakarta.annotation.security.PermitAll;
 import org.apache.coyote.http11.Http11InputBuffer;
+
+import java.util.UUID;
 
 
 @Route(value = "profile", layout = MainLayout.class)
@@ -37,10 +42,20 @@ public class UserProfileView extends VerticalLayout {
 
     private final User currentUser;
 
+    private final EmailChangeService emailChangeService;
 
-    public UserProfileView(final UserService userService, final HashService hashService){
+    private final MailService mailService;
+
+    public UserProfileView(
+            final UserService userService,
+            final HashService hashService,
+            final EmailChangeService emailChangeService,
+            final MailService  mailService){
+
         this.hashService = hashService;
         this.userService = userService;
+        this.emailChangeService = emailChangeService;
+        this.mailService = mailService;
         this.formLayout = new VerticalLayout();
 
         currentUser = this.userService.getCurrentLoggedInUser();
@@ -86,9 +101,22 @@ public class UserProfileView extends VerticalLayout {
 
                         pwd = this.hashService.hash(password.getValue());
                     }
+
+                    if (!currentUser.getEmail().equals(email.getValue())){
+                        this.emailChangeService.save(
+                                EmailChange.builder()
+                                        .newEmail(email.getValue())
+                                        .user(currentUser)
+                                        .id(UUID.randomUUID().toString())
+                                        .build()
+                        );
+
+
+                    }
+
                     User user = User.builder()
                             .username(this.currentUser.getUsername())
-                            .email(email.getValue())
+                            .email(currentUser.getEmail())
                             .password(pwd)
                             .build();
                     this.userService.save(user);

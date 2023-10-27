@@ -65,7 +65,6 @@ public class MainLayout extends AppLayout {
 
 
     public MainLayout(final UserService userService, final SecurityService securityService){
-        mailService.sendMail("yannick.mueller@bbzbl-it.ch", "test", "test");
 
         this.userService = userService;
         this.securityService = securityService;
