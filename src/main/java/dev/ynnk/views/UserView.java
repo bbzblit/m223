@@ -92,7 +92,6 @@ public class UserView extends VerticalLayout {
             userList.setItems(user);
         }
 
-
         add(userList);
     }
 

@@ -5,6 +5,7 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.charts.model.Side;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
@@ -12,12 +13,17 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.sidenav.SideNav;
+import com.vaadin.flow.component.sidenav.SideNavItem;
 import com.vaadin.flow.server.VaadinServletRequest;
 import dev.ynnk.model.User;
 import dev.ynnk.service.HashService;
 import dev.ynnk.service.MailService;
 import dev.ynnk.service.SecurityService;
 import dev.ynnk.service.UserService;
+import dev.ynnk.views.ChatView;
+import dev.ynnk.views.UserProfileView;
+import dev.ynnk.views.UserView;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 public class MainLayout extends AppLayout {
@@ -26,11 +32,17 @@ public class MainLayout extends AppLayout {
 
     private final SecurityService securityService;
 
+
+    private final SideNav nav = new SideNav();
+
     private User currentUser;
 
     private void header(){
         HorizontalLayout title = new HorizontalLayout(VaadinIcon.CHAT.create(), new H1(" Chat"));
         title.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        Anchor titleLink = new Anchor("/", title);
+        titleLink.setWidthFull();
+
         Button logout = new Button("Sign out", VaadinIcon.SIGN_OUT.create(), e -> securityService.logout());
 
         logout.getStyle().set("cursor", "pointer");
@@ -42,7 +54,7 @@ public class MainLayout extends AppLayout {
 
         avatar.getStyle().set("cursor", "pointer");
 
-        HorizontalLayout header = new HorizontalLayout(profileLink,title, logout);
+        HorizontalLayout header = new HorizontalLayout(profileLink, titleLink, logout);
 
 
 
@@ -55,6 +67,22 @@ public class MainLayout extends AppLayout {
 
         addToNavbar(header);
 
+        initSideNav();
+    }
+
+    private void initSideNav(){
+
+        SideNavItem home = new SideNavItem("Home", ChatView.class, VaadinIcon.HOME.create());
+        SideNavItem profile = new SideNavItem("Profile", UserProfileView.class, VaadinIcon.USER.create());
+
+        nav.addItem(home, profile);
+
+        if (this.currentUser.isAdmin()){
+            SideNavItem users = new SideNavItem("Users", UserView.class, VaadinIcon.USERS.create());
+            nav.addItem(users);
+        }
+
+        addToDrawer(nav);
     }
 
     private void footer(){
