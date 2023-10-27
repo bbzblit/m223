@@ -15,9 +15,11 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import dev.ynnk.MainLayout;
 import dev.ynnk.model.User;
+import dev.ynnk.service.SecurityService;
 import dev.ynnk.service.UserService;
 import jakarta.annotation.security.RolesAllowed;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +33,8 @@ public class UserView extends VerticalLayout {
 
     Grid<User> userList = new Grid<>(User.class, false);
 
+    private final User currentUser;
+
     private void initGrid(){
 
         Editor<User> editor = userList.getEditor();
@@ -40,7 +44,11 @@ public class UserView extends VerticalLayout {
         Grid.Column<User> adminColumn = userList.addColumn(User::isAdmin).setHeader("Admin");
 
         Grid.Column<User> editColumn = userList.addComponentColumn(user -> {
+
             Button editButton = new Button("Edit");
+            if (user.getUsername().equals(this.currentUser.getUsername())){
+                editButton.setEnabled(false);
+            }
             editButton.addClickListener(e -> {
                 if (editor.isOpen())
                     editor.cancel();
@@ -83,14 +91,20 @@ public class UserView extends VerticalLayout {
 
     }
 
-    public UserView(final UserService userService){
+    public UserView(final UserService userService, final SecurityService securityService){
         this.userService = userService;
+        this.currentUser = userService.getCurrentLoggedInUser();
+
 
         initGrid();
 
-        for (User user : this.userService.findAll()) {
-            userList.setItems(user);
-        }
+        Iterable<User> dbUsers = this.userService.findAll();
+
+        List<User> users = new ArrayList<>();
+
+        dbUsers.forEach(users::add);
+
+        userList.setItems(users);
 
         add(userList);
     }

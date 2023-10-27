@@ -2,6 +2,8 @@ package dev.ynnk.service;
 
 import dev.ynnk.model.User;
 import dev.ynnk.repository.UserRepository;
+import jakarta.persistence.LockModeType;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
