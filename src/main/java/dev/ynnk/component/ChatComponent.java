@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class ChatComponent extends VerticalLayout {
 
 
-    private final MessageService messageService;
     private final UserService userService;
 
 
@@ -27,13 +26,11 @@ public class ChatComponent extends VerticalLayout {
 
 
     public ChatComponent(
-            final MessageService messageService,
             final MessageCallback callback,
             final UserService userService,
             final String chatName) {
 
         this.userService = userService;
-        this.messageService = messageService;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = this.userService.findById(authentication.getName());

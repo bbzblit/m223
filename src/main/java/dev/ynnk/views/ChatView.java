@@ -141,8 +141,7 @@ public class ChatView extends HorizontalLayout {
     private void changeChat(String username){
         User user = this.userService.findById(username);
         Chat chat = this.chatService.findByUsernames(this.currentUser.getUsername(), user.getUsername());
-        ChatComponent chatComponent = new ChatComponent(
-                this.messageService, this.messageCallback, this.userService, chat.getId().toString());
+        ChatComponent chatComponent = new ChatComponent(this.messageCallback, this.userService, chat.getId().toString());
 
         this.chatWrapper.removeAll();
         this.chatWrapper.add(chatComponent);
