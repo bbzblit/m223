@@ -65,6 +65,13 @@ public class UserProfileView extends VerticalLayout {
 
         username.setReadOnly(true);
 
+        TextField firstName = new TextField("First Name");
+        firstName.setValue(currentUser.getFirstName());
+
+        TextField lastName = new TextField("Last Name");
+        lastName.setValue(currentUser.getLastName());
+
+
         EmailField email = new EmailField("Email");
         email.setValue(currentUser.getEmail());
 
@@ -82,6 +89,8 @@ public class UserProfileView extends VerticalLayout {
 
         username.getStyle().set("width", "15rem");
         email.getStyle().set("width", "15rem");
+        firstName.getStyle().set("width", "15rem");
+        lastName.getStyle().set("width", "15rem");
         password.getStyle().set("width", "15rem");
         confirmPassword.getStyle().set("width", "15rem");
 
@@ -102,6 +111,30 @@ public class UserProfileView extends VerticalLayout {
                         pwd = this.hashService.hash(password.getValue());
                     }
 
+                    if (email.isInvalid()){
+                        return;
+                    }
+
+                    if (firstName.getValue() == null || firstName.getValue().isEmpty()){
+                        firstName.setErrorMessage("First name cannot be empty");
+                        firstName.setInvalid(true);
+                        return;
+                    }
+
+                    if (lastName.getValue() == null || lastName.getValue().isEmpty()){
+                        lastName.setErrorMessage("Last name cannot be empty");
+                        lastName.setInvalid(true);
+                        return;
+                    }
+
+                    if (!password.getValue().isEmpty() && password.getValue().length() < 12){
+                        password.setErrorMessage("Password must be at least 12 characters");
+                        password.setInvalid(true);
+                        confirmPassword.setErrorMessage("Password must be at least 12 characters");
+                        confirmPassword.setInvalid(true);
+                        return;
+                    }
+
                     if (!currentUser.getEmail().equals(email.getValue())){
                         this.emailChangeService.save(
                                 EmailChange.builder()
@@ -118,6 +151,8 @@ public class UserProfileView extends VerticalLayout {
                             .username(this.currentUser.getUsername())
                             .email(currentUser.getEmail())
                             .password(pwd)
+                            .firstName(firstName.getValue())
+                            .lastName(lastName.getValue())
                             .build();
                     this.userService.save(user);
                     Notification notification = new Notification();
@@ -130,7 +165,7 @@ public class UserProfileView extends VerticalLayout {
                 }
         );
 
-        this.formLayout.add(username, email, password, confirmPassword, anchor ,save);
+        this.formLayout.add(username, firstName, lastName, email, password, confirmPassword, anchor ,save);
 
         add(title, this.formLayout);
 

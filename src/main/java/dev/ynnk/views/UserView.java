@@ -26,7 +26,7 @@ import java.util.List;
 @Route(value = "users", layout = MainLayout.class)
 @RouteAlias(value = "users", layout = MainLayout.class)
 @PageTitle("User Overview")
-@RolesAllowed({"ROLE_USER", "ROLE_ADMIN"})
+@RolesAllowed({"ROLE_ADMIN"})
 public class UserView extends VerticalLayout {
 
     private final UserService userService;
@@ -40,6 +40,8 @@ public class UserView extends VerticalLayout {
         Editor<User> editor = userList.getEditor();
 
         Grid.Column<User> usernameColumn = userList.addColumn(User::getUsername).setHeader("Username");
+        Grid.Column<User> firstNameColumn = userList.addColumn(User::getFirstName).setHeader("First Name");
+        Grid.Column<User> lastNameColumn = userList.addColumn(User::getLastName).setHeader("Last Name");
         Grid.Column<User> emailColumn = userList.addColumn(User::getEmail).setHeader("Email");
         Grid.Column<User> adminColumn = userList.addColumn(User::isAdmin).setHeader("Admin");
 
@@ -66,6 +68,14 @@ public class UserView extends VerticalLayout {
         usernameField.setReadOnly(true);
         binder.forField(usernameField).bind(User::getUsername, User::setUsername);
         usernameColumn.setEditorComponent(usernameField);
+
+        TextField firstNameField = new TextField();
+        binder.forField(firstNameField).bind(User::getFirstName, User::setFirstName);
+        firstNameColumn.setEditorComponent(firstNameField);
+
+        TextField lastNameField = new TextField();
+        binder.forField(lastNameField).bind(User::getLastName, User::setLastName);
+        lastNameColumn.setEditorComponent(lastNameField);
 
         TextField emailField = new TextField();
         binder.forField(emailField).bind(User::getEmail, User::setEmail);

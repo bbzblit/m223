@@ -1,5 +1,6 @@
 package dev.ynnk;
 
+import com.fasterxml.jackson.datatype.jsr310.deser.InstantDeserializer;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -35,7 +36,7 @@ public class MainLayout extends AppLayout {
 
     private final SideNav nav = new SideNav();
 
-    private User currentUser;
+    private final User currentUser;
 
     private void header(){
         HorizontalLayout title = new HorizontalLayout(VaadinIcon.CHAT.create(), new H1(" Chat"));
@@ -94,11 +95,11 @@ public class MainLayout extends AppLayout {
 
     public MainLayout(final UserService userService, final SecurityService securityService){
 
+
         this.userService = userService;
         this.securityService = securityService;
 
         this.currentUser = this.userService.getCurrentLoggedInUser();
-
 
 
         header();
